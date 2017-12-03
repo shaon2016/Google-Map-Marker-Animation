@@ -1,20 +1,27 @@
 package com.durbinlabs.googlemapmarkeranimation;
 
+import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Property;
 import android.view.View;
+import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.durbinlabs.googlemapmarkeranimation.Remote.IGoogleApi;
+import com.durbinlabs.googlemapmarkeranimation.interfaces.LatLngInterpolator;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,6 +50,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final int ANIMATE_SPEEED = 1500;
+    private static final int BEARING_OFFSET = 20;
+    private static final int ANIMATE_SPEEED_TURN = 1000;
+    private final Interpolator interpolator = new LinearInterpolator();
+    final long start = SystemClock.uptimeMillis();
 
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
@@ -100,6 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         final LatLng mirpur = new LatLng(23.8223, 90.3654);
+        final LatLng dhanmondi = new LatLng(23.7465, 90.3760);
         mMap.addMarker(new MarkerOptions().position(mirpur).title("Marker in Mirpur"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mirpur));
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
@@ -180,14 +193,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 int newPoints = (int) (size * (percentValue / 100.0f));
                                 List<LatLng> p = points.subList(0, newPoints);
                                 blackPolyline.setPoints(p);
-
                             }
                         });
                         polyLineAnimator.start();
+
                         marker = mMap.addMarker(new MarkerOptions().position(mirpur).flat(true)
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable
                                         .ic_car_icon)));
-                        // Movement
+
+                         //Movement
                         handler = new Handler();
                         index = -1;
                         next = 1;
@@ -203,35 +217,64 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     startPosition = polyLinesList.get(index);
                                     endPosition = polyLinesList.get(next);
                                 }
-                                final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
-                                valueAnimator.setDuration(3000);
-                                valueAnimator.setInterpolator(new LinearInterpolator());
-                                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                    @Override
-                                    public void onAnimationUpdate(ValueAnimator animation) {
-                                        v = animation.getAnimatedFraction();
-                                        lng = v * endPosition.longitude + (1 - v)
-                                                * startPosition.longitude;
-                                        lat = v * endPosition.latitude + (1 - v)
-                                                * startPosition.latitude;
-                                        Log.d("LatLng", "New Post Lat Lng: " + lat + " "
-                                                + lng);
-                                        LatLng newPos = new LatLng(lat, lng);
 
-                                        marker.setPosition(newPos);
-                                        marker.setAnchor(0.5f, 0.5f);
-                                        marker.setRotation(getBearing(startPosition, newPos));
-                                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new
-                                                CameraPosition.Builder().
-                                                target(newPos)
-                                                .zoom(15.5f)
-                                                .build()));
-                                    }
-                                });
-                                valueAnimator.start();
-                                handler.postDelayed(this, 3000);
+//                                long elapsed = SystemClock.uptimeMillis() - start;
+//                                double t = interpolator.getInterpolation((float)elapsed/ANIMATE_SPEEED);
+//
+//                                double lat = t * endPosition.latitude + (1-t) * startPosition.latitude;
+//                                double lng = t * endPosition.longitude + (1-t) * startPosition.longitude;
+//                                LatLng newPos = new LatLng(lat, lng);
+//                                marker.setPosition(newPos);
+//                                marker.setAnchor(0.5f, 0.5f);
+//                                //marker.setRotation(getBearing(startPosition, newPos));
+//                                marker.setRotation(bearingBetweenLatLngs(startPosition,
+//                                        newPos));
+//
+//
+//                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new
+//                                        CameraPosition.Builder().
+//                                        target(newPos)
+//                                        .zoom(15.5f)
+//                                        .build()));
+//
+//                                Spherical spherical = new Spherical();
+//                                animateMarkerToIC(marker, newPos, spherical);
+
+                                //
+//                                final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+//                                valueAnimator.setDuration(3000);
+//                                valueAnimator.setInterpolator(new LinearInterpolator());
+//                                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                                    @Override
+//                                    public void onAnimationUpdate(ValueAnimator animation) {
+//                                        v = animation.getAnimatedFraction();
+//                                        lng = v * endPosition.longitude + (1 - v)
+//                                                * startPosition.longitude;
+//                                        lat = v * endPosition.latitude + (1 - v)
+//                                                * startPosition.latitude;
+//                                        Log.d("LatLng", "New Post Lat Lng: " + lat + " "
+//                                                + lng);
+//                                        LatLng newPos = new LatLng(lat, lng);
+//
+//                                        marker.setPosition(newPos);
+//                                        marker.setAnchor(0.5f, 0.5f);
+//                                        //marker.setRotation(getBearing(startPosition, newPos));
+//                                        marker.setRotation(bearingBetweenLatLngs(startPosition,
+//                                                newPos));
+//
+//
+//                                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new
+//                                                CameraPosition.Builder().
+//                                                target(newPos)
+//                                                .zoom(15.5f)
+//                                                .build()));
+//                                    }
+//                                });
+//                                valueAnimator.start();
+//                                handler.postDelayed(this, 16);
                             }
-                        }, 3000);
+                       }, 3000);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -300,9 +343,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return path;
     }
 
+    private Location convertLatLngToLocation(LatLng latLng) {
+        Location loc = new Location("someLoc");
+        loc.setLatitude(latLng.latitude);
+        loc.setLongitude(latLng.longitude);
+        return loc;
+    }
+
+    private float bearingBetweenLatLngs(LatLng begin, LatLng end) {
+        Location beginL = convertLatLngToLocation(begin);
+        Location endL = convertLatLngToLocation(end);
+
+        return beginL.bearingTo(endL);
+    }
+
     public Bitmap resizeBitmap(String drawableName, int width, int height) {
         Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), getResources()
                 .getIdentifier(drawableName, "drawable", getPackageName()));
         return Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+    }
+
+    static void animateMarkerToIC(Marker marker, LatLng finalPosition,
+                                  final LatLngInterpolator latLngInterpolator) {
+        TypeEvaluator<LatLng> typeEvaluator = new TypeEvaluator<LatLng>() {
+            @Override
+            public LatLng evaluate(float fraction, LatLng startValue, LatLng endValue) {
+                return latLngInterpolator.interpolate(fraction, startValue, endValue);
+            }
+        };
+        Property<Marker, LatLng> property = Property.of(Marker.class, LatLng.class, "position");
+        ObjectAnimator animator = ObjectAnimator.ofObject(marker, property, typeEvaluator, finalPosition);
+        animator.setDuration(3000);
+        animator.start();
     }
 }
