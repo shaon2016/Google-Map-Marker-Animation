@@ -1,11 +1,15 @@
 package com.durbinlabs.googlemapmarkeranimation;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,7 +42,7 @@ import java.util.Random;
 /**
  * Created by hp on 12/4/2017.
  */
-public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallback {
     // Keep track of our markers
     private List<Marker> markers = new ArrayList<Marker>();
     private SupportMapFragment mapFragment;
@@ -57,75 +61,84 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     };
     Button btnRemove, btnClear, btnAdd, btnStartAnim, btnStopAnim, btnToggle;
 
+    protected Toolbar getToolBar() {
+        return (Toolbar) findViewById(R.id.toolbar);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps2);
 
+        Toolbar toolbar = getToolBar();
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(MapsActivity2.this);
 
-        btnRemove = findViewById(R.id.action_bar_remove_location);
-        btnClear = findViewById(R.id.action_bar_clear_locations);
-        btnToggle = findViewById(R.id.action_bar_toggle_style);
-        btnStopAnim = findViewById(R.id.action_bar_stop_animation);
-        btnStartAnim = findViewById(R.id.action_bar_start_animation);
-        btnAdd = findViewById(R.id.action_bar_add_default_locations);
-
-        btnRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                removeSelectedMarker();
-            }
-        });
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addDefaultLocations();
-            }
-        });
-        btnClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearMarkers();
-            }
-        });
-        btnStartAnim.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animator.startAnimation(true);
-            }
-        });
-        btnStopAnim.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animator.stopAnimation();
-            }
-        });
-        btnToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleStyle();
-            }
-        });
+//        btnRemove = findViewById(R.id.action_bar_remove_location);
+//        btnClear = findViewById(R.id.action_bar_clear_locations);
+//        btnToggle = findViewById(R.id.action_bar_toggle_style);
+//        btnStopAnim = findViewById(R.id.action_bar_stop_animation);
+//        btnStartAnim = findViewById(R.id.action_bar_start_animation);
+//        btnAdd = findViewById(R.id.action_bar_add_default_locations);
+//
+//        btnRemove.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                removeSelectedMarker();
+//            }
+//        });
+//        btnAdd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                addDefaultLocations();
+//            }
+//        });
+//        btnClear.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                clearMarkers();
+//            }
+//        });
+//        btnStartAnim.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                animator.startAnimation(true);
+//            }
+//        });
+//        btnStopAnim.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                animator.stopAnimation();
+//            }
+//        });
+//        btnToggle.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                toggleStyle();
+//            }
+//        });
 
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        this. googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        this.googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         final LatLng mirpur = new LatLng(23.8223, 90.3654);
         addMarkerToMap(mirpur);
         Marker marker = this.googleMap.addMarker(new MarkerOptions().position(mirpur).title
                 ("Marker " +
-                "in Mirpur"));
+                        "in Mirpur"));
         markers.add(marker);
         this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(mirpur));
         this.googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                 .target(googleMap.getCameraPosition().target)
-                .zoom(17)
+                .zoom(10)
                 .bearing(30)
                 .tilt(45)
                 .build()));
@@ -165,19 +178,6 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
 
                     if (++currentPt < markers.size()) {
-
-//						//Get the current location
-//						Location startingLocation = new Location("starting point");
-//						startingLocation.setLatitude(googleMap.getCameraPosition().target.latitude);
-//						startingLocation.setLongitude(googleMap.getCameraPosition().target.longitude);
-//
-//						//Get the target location
-//						Location endingLocation = new Location("ending point");
-//						endingLocation.setLatitude(markers.get(currentPt).getPosition().latitude);
-//						endingLocation.setLongitude(markers.get(currentPt).getPosition().longitude);
-//
-//						//Find the Bearing from current location to next location
-//						float targetBearing = startingLocation.bearingTo(endingLocation);
 
                         float targetBearing = bearingBetweenLatLngs(googleMap.getCameraPosition().target, markers.get(currentPt).getPosition());
 
@@ -285,7 +285,8 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                             .target(markerPos)
                             .bearing(bearing + BEARING_OFFSET)
                             .tilt(90)
-                            .zoom(googleMap.getCameraPosition().zoom >= 16 ? googleMap.getCameraPosition().zoom : 16)
+                            .zoom(googleMap.getCameraPosition().zoom >= 9 ? googleMap
+                                    .getCameraPosition().zoom : 9)
                             .build();
 
             googleMap.animateCamera(
@@ -444,6 +445,37 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.animating_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_bar_remove_location) {
+            removeSelectedMarker();
+            return true;
+        } else if (item.getItemId() == R.id.action_bar_add_default_locations) {
+            addDefaultLocations();
+            return true;
+        } else if (item.getItemId() == R.id.action_bar_start_animation) {
+            animator.startAnimation(true);
+            return true;
+        } else if (item.getItemId() == R.id.action_bar_stop_animation) {
+            animator.stopAnimation();
+            return true;
+        } else if (item.getItemId() == R.id.action_bar_clear_locations) {
+            clearMarkers();
+            return true;
+        } else if (item.getItemId() == R.id.action_bar_toggle_style) {
+            toggleStyle();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     ;
