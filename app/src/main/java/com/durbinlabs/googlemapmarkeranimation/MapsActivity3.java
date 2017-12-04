@@ -49,7 +49,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity3 extends FragmentActivity implements OnMapReadyCallback {
     private static final int ANIMATE_SPEEED = 1500;
     private static final int BEARING_OFFSET = 20;
     private static final int ANIMATE_SPEEED_TURN = 1000;
@@ -93,7 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 destination = evSearch.getText().toString();
                 destination.replace(" ", "+");
-                mapFragment.getMapAsync(MapsActivity.this);
+                mapFragment.getMapAsync(MapsActivity3.this);
             }
         });
 
@@ -221,38 +221,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     endPosition = polyLinesList.get(next);
                                 }
 
-
-                                final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
-                                valueAnimator.setDuration(3000);
-                                valueAnimator.setInterpolator(new LinearInterpolator());
-                                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                    @Override
-                                    public void onAnimationUpdate(ValueAnimator animation) {
-                                        v = animation.getAnimatedFraction();
-                                        lng = v * endPosition.longitude + (1 - v)
-                                                * startPosition.longitude;
-                                        lat = v * endPosition.latitude + (1 - v)
-                                                * startPosition.latitude;
-                                        Log.d("LatLng", "New Post Lat Lng: " + lat + " "
-                                                + lng);
-                                        LatLng newPos = new LatLng(lat, lng);
-
-                                        marker.setPosition(newPos);
-                                        marker.setAnchor(0.5f, 0.5f);
-                                        //marker.setRotation(getBearing(startPosition, newPos));
-                                        marker.setRotation(bearingBetweenLatLngs(startPosition,
-                                                newPos));
+                                marker.setPosition(startPosition);
+                                marker.setAnchor(0.5f, 0.5f);
+                                //marker.setRotation(getBearing(startPosition, newPos));
+                                marker.setRotation(bearingBetweenLatLngs(startPosition,
+                                        endPosition));
 
 
-                                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new
-                                                CameraPosition.Builder().
-                                                target(newPos)
-                                                .zoom(15.5f)
-                                                .build()));
-                                    }
-                                });
-                                valueAnimator.start();
-                                handler.postDelayed(this, 16);
+                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new
+                                        CameraPosition.Builder().
+                                        target(startPosition)
+                                        .zoom(15.5f)
+                                        .build()));
+
+                                animateMarkerToIC(marker, endPosition, new Spherical());
+
+                                handler.postDelayed(this, 2000);
                             }
                         }, 3000);
 
@@ -263,7 +247,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    Toast.makeText(MapsActivity.this, ""
+                    Toast.makeText(MapsActivity3.this, ""
                             + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -271,22 +255,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    private float getBearing(LatLng startPosition, LatLng newPost) {
-        double lat = Math.abs(startPosition.latitude - newPost.latitude);
-        double lng = Math.abs(startPosition.longitude - newPost.longitude);
-
-        if (startPosition.latitude < newPost.latitude && startPosition.longitude < newPost.longitude)
-            return (float) Math.toDegrees(Math.atan(lng / lat));
-        else if (startPosition.latitude >= newPost.latitude && startPosition.longitude < newPost.longitude)
-            return (float) (Math.toDegrees(90 - Math.atan(lng / lat)) + 90);
-        else if (startPosition.latitude >= newPost.latitude && startPosition.longitude >= newPost.longitude)
-            return (float) (Math.toDegrees(Math.atan(lng / lat)) + 180);
-        else if (startPosition.latitude < newPost.latitude && startPosition.longitude >= newPost.longitude)
-            return (float) (Math.toDegrees(90 - Math.atan(lng / lat)) + 270);
-        return -1;
     }
 
     public static List<LatLng> decodePoly(final String encodedPath) {
@@ -339,5 +307,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return beginL.bearingTo(endL);
     }
 
-
+    static void animateMarkerToIC(Marker marker, LatLng finalPosition,
+                                  final LatLngInterpolator latLngInterpolator) {
+        TypeEvaluator<LatLng> typeEvaluator = new TypeEvaluator<LatLng>() {
+            @Override
+            public LatLng evaluate(float fraction, LatLng startValue, LatLng endValue) {
+                return latLngInterpolator.interpolate(fraction, startValue, endValue);
+            }
+        };
+        Property<Marker, LatLng> property = Property.of(Marker.class, LatLng.class, "position");
+        ObjectAnimator animator = ObjectAnimator.ofObject(marker, property, typeEvaluator, finalPosition);
+        animator.setDuration(3000);
+        animator.start();
+    }
 }

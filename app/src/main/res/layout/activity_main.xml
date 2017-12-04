@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.durbinlabs.googlemapmarkeranimation.MainActivity">
 
     <Button
-        android:id="@+id/animCar"
-        android:text="Animation With Car"
+        android:id="@+id/btnAnimCar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Animation With Car" />
     <Button
-        android:id="@+id/animMarker"
-        android:text="Animation using marker"
+        android:id="@+id/btnAnimCar2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Animation With Car using google code" />
+
+    <Button
+        android:id="@+id/btnAnimMarker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Animation using marker" />
 </LinearLayout>

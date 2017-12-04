@@ -7,21 +7,24 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    Button animCar, btnAnimMarker;
+    Button btnAnimCar, btnAnimCar2, btnAnimMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        animCar = (Button) findViewById(R.id.animCar);
-        btnAnimMarker = (Button) findViewById(R.id.animMarker);
+        btnAnimCar = (Button) findViewById(R.id.btnAnimCar);
+        btnAnimCar2 = (Button) findViewById(R.id.btnAnimCar2);
+        btnAnimMarker = (Button) findViewById(R.id.btnAnimMarker);
 
-        animCar.setOnClickListener(new View.OnClickListener() {
+        btnAnimCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, MapsActivity.class));
             }
         });
+
+
         btnAnimMarker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -29,5 +32,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnAnimCar2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, MapsActivity3.class));
+            }
+        });
     }
 }
