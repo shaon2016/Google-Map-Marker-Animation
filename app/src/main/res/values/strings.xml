@@ -2,4 +2,10 @@
     <string name="app_name">Google Map Marker Animation</string>
     <string name="title_activity_maps">Map</string>
     <string name="google_maps_key">AIzaSyCpgAIwh2L8uoFexKHD3-fwP88LxAT5ztI</string>
+    <string name="remove">Remove</string>
+    <string name="start_animation">Start Animation</string>
+    <string name="stop_animation">Stop Animation</string>
+    <string name="clear_markers">Clear Markers</string>
+    <string name="add_default_locations">Add Default Locations</string>
+    <string name="toggle_style">Toogle Style</string>
 </resources>

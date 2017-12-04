@@ -201,7 +201,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable
                                         .ic_car_icon)));
 
-                         //Movement
+                        //Movement
                         handler = new Handler();
                         index = -1;
                         next = 1;
@@ -273,7 +273,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                                valueAnimator.start();
 //                                handler.postDelayed(this, 16);
                             }
-                       }, 3000);
+                        }, 3000);
 
                     } catch (Exception e) {
                         e.printStackTrace();
