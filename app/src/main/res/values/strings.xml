@@ -8,5 +8,6 @@
     <string name="clear_markers">Clear Markers</string>
     <string name="add_default_locations">Add Default Locations</string>
     <string name="toggle_style">Toogle Style</string>
+    <string name="title_activity_draggable_marker">Map</string>
 </resources>
 

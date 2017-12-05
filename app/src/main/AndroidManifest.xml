@@ -33,7 +33,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MapsActivity3"></activity>
+        <activity android:name=".MapsActivity3" />
+        <activity
+            android:name=".DraggableMarker"
+            android:label="@string/title_activity_draggable_marker"></activity>
     </application>
 
 </manifest>
