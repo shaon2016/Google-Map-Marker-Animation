@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class DraggableMarker extends FragmentActivity implements OnMapReadyCallback,
+public class UpdatePositionMovingTheMap  extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
@@ -52,7 +52,7 @@ public class DraggableMarker extends FragmentActivity implements OnMapReadyCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_position_moving_the_map);
+        setContentView(R.layout.activity_draggable_marker);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -60,7 +60,7 @@ public class DraggableMarker extends FragmentActivity implements OnMapReadyCallb
         geocoder = new Geocoder(this, Locale.getDefault());
 
         //auto complete api
-        mGoogleApiClient = new GoogleApiClient.Builder(DraggableMarker.this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
                 .addConnectionCallbacks(this)

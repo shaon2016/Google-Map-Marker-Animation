@@ -1,4 +1,4 @@
-package com.durbinlabs.googlemapmarkeranimation;
+package com.durbinlabs.googlemapmarkeranimation.Other;
 
 import com.durbinlabs.googlemapmarkeranimation.Remote.IGoogleApi;
 import com.durbinlabs.googlemapmarkeranimation.Remote.RetrofitClient;

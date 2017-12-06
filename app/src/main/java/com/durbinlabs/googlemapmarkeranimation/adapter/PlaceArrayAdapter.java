@@ -1,4 +1,4 @@
-package com.durbinlabs.googlemapmarkeranimation;
+package com.durbinlabs.googlemapmarkeranimation.adapter;
 
 import android.content.Context;
 import android.util.Log;

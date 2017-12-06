@@ -1,4 +1,4 @@
-package com.durbinlabs.googlemapmarkeranimation;
+package com.durbinlabs.googlemapmarkeranimation.Util;
 
 import com.durbinlabs.googlemapmarkeranimation.interfaces.LatLngInterpolator;
 import com.google.android.gms.maps.model.LatLng;
