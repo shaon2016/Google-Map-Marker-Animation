@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    Button btnAnimCar, btnAnimCar2, btnAnimMarker, btnDragMarker;
+    Button btnAnimCar, btnAnimCar2, btnAnimMarker, btnDragMarker, btnDragMarkerAndMoveTheMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
         btnAnimCar2 = (Button) findViewById(R.id.btnAnimCar2);
         btnAnimMarker = (Button) findViewById(R.id.btnAnimMarker);
         btnDragMarker = (Button) findViewById(R.id.btnDragMarker);
+        btnDragMarkerAndMoveTheMap = (Button) findViewById(R.id.btnDragMarkerAndMoveTheMap);
 
         btnAnimCar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, DraggableMarker.class));
+            }
+        });
+
+        btnDragMarkerAndMoveTheMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, UpdatePositionMovingTheMap.class));
             }
         });
     }

@@ -52,7 +52,7 @@ public class DraggableMarker extends FragmentActivity implements OnMapReadyCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_position_moving_the_map);
+        setContentView(R.layout.activity_draggable_marker);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

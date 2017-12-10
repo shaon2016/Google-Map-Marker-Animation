@@ -5,9 +5,11 @@ import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.durbinlabs.googlemapmarkeranimation.adapter.PlaceArrayAdapter;
@@ -32,8 +34,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class UpdatePositionMovingTheMap  extends FragmentActivity implements OnMapReadyCallback,
+public class UpdatePositionMovingTheMap extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener,
+        GoogleMap.OnCameraIdleListener,
+        GoogleMap.OnCameraMoveStartedListener,
+        GoogleMap.OnCameraMoveListener,
+        GoogleMap.OnCameraMoveCanceledListener,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
     private Marker marker;
@@ -41,7 +47,7 @@ public class UpdatePositionMovingTheMap  extends FragmentActivity implements OnM
     private List<Address> addresses;
     private static final String TAG = DraggableMarker.class.getSimpleName();
     private GoogleMap mMap;
-
+    private ImageView centerMarkerByImageView;
     private static final int GOOGLE_API_CLIENT_ID = 0;
     private AutoCompleteTextView mAutocompleteTextView;
     private GoogleApiClient mGoogleApiClient;
@@ -52,7 +58,8 @@ public class UpdatePositionMovingTheMap  extends FragmentActivity implements OnM
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_draggable_marker);
+        setContentView(R.layout.activity_update_position_moving_the_map);
+        centerMarkerByImageView = findViewById(R.id.centerMarkerByImageView);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -130,6 +137,11 @@ public class UpdatePositionMovingTheMap  extends FragmentActivity implements OnM
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMarkerDragListener(this);
+        mMap.setOnCameraIdleListener(this);
+        mMap.setOnCameraMoveStartedListener(this);
+        mMap.setOnCameraMoveListener(this);
+        mMap.setOnCameraMoveCanceledListener(this);
+
     }
 
     @Override
@@ -198,5 +210,42 @@ public class UpdatePositionMovingTheMap  extends FragmentActivity implements OnM
     public void onConnectionSuspended(int i) {
         mPlaceArrayAdapter.setGoogleApiClient(null);
         Log.e(TAG, "Google Places API connection suspended.");
+    }
+
+
+    // move the map and update the address
+    @Override
+    public void onCameraIdle() {
+        try {
+            centerMarkerByImageView.setVisibility(View.GONE);
+            LatLng midLatLng = mMap.getCameraPosition().target;
+            if (midLatLng != null) {
+                marker.remove();
+                addresses = geocoder.getFromLocation(midLatLng.latitude,
+                        midLatLng.longitude, 1); // Here 1 represent max location
+                String address = addresses.get(0).getAddressLine(0);
+                marker = mMap.addMarker(new MarkerOptions().position(midLatLng).title(address)
+                        .draggable(true));
+                marker.showInfoWindow();
+            } else Toast.makeText(this, "No Location found", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void onCameraMoveCanceled() {
+
+    }
+
+    @Override
+    public void onCameraMove() {
+        centerMarkerByImageView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onCameraMoveStarted(int i) {
+
     }
 }

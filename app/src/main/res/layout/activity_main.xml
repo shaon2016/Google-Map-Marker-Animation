@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Animation With Car" />
+
     <Button
         android:id="@+id/btnAnimCar2"
         android:layout_width="wrap_content"
@@ -29,4 +30,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Drag the marker" />
+
+    <Button
+        android:id="@+id/btnDragMarkerAndMoveTheMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Move The map to update marker position" />
 </LinearLayout>
