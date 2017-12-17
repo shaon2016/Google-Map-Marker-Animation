@@ -48,7 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int BEARING_OFFSET = 20;
     private static final int ANIMATE_SPEEED_TURN = 1000;
     private final Interpolator interpolator = new LinearInterpolator();
-    final long start = SystemClock.uptimeMillis();
+    private final long start = SystemClock.uptimeMillis();
 
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
@@ -58,7 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double lat, lng;
     private Handler handler;
     private LatLng startPosition, endPosition;
-    private int index, next;
+    private int index, next, stepOfPolyLine;
     private Button btnGo;
     private EditText evSearch;
     private String destination;
@@ -108,13 +108,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final LatLng mirpur = new LatLng(23.8223, 90.3654);
         final LatLng dhanmondi = new LatLng(23.7465, 90.3760);
         mMap.addMarker(new MarkerOptions().position(mirpur).title("Marker in Mirpur"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(mirpur));
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
-                .target(googleMap.getCameraPosition().target)
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(mirpur)
                 .zoom(17)
                 .bearing(30)
                 .tilt(45)
-                .build()));
+                .build();
+        //mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        mMap.animateCamera(
+                CameraUpdateFactory.newCameraPosition(cameraPosition),
+                ANIMATE_SPEEED_TURN,null);
 
         String requestUrl = null;
 
@@ -149,7 +154,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             builder.include(latLng);
 
                         LatLngBounds latLngBounds = builder.build();
-                        CameraUpdate cameraUpdate =
+                        final CameraUpdate cameraUpdate =
                                 CameraUpdateFactory.newLatLngBounds(latLngBounds, 2);
                         mMap.animateCamera(cameraUpdate);
 
@@ -201,10 +206,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         index = -1;
                         next = 1;
 
-
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
+
                                 if (index < polyLinesList.size() - 1) {
                                     index++;
                                     next = index + 1;
@@ -214,7 +219,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     startPosition = polyLinesList.get(index);
                                     endPosition = polyLinesList.get(next);
                                 }
-
 
                                 final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
                                 valueAnimator.setDuration(3000);
@@ -234,19 +238,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         marker.setPosition(newPos);
                                         marker.setAnchor(0.5f, 0.5f);
                                         //marker.setRotation(getBearing(startPosition, newPos));
+
                                         marker.setRotation(bearingBetweenLatLngs(startPosition,
                                                 newPos));
 
+                                        CameraPosition cameraPosition = new CameraPosition
+                                                .Builder()
+                                                .target(newPos)
+                                                .zoom(15f)
+                                                .build();
 
-                                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new
-                                                CameraPosition.Builder().
-                                                target(newPos)
-                                                .zoom(15.5f)
-                                                .build()));
+                                        mMap.animateCamera(CameraUpdateFactory
+                                        .newCameraPosition(cameraPosition), 2000, null);
+
+//                                        mMap.moveCamera(CameraUpdateFactory.
+//                                                newCameraPosition(cameraPosition));
+
                                     }
                                 });
                                 valueAnimator.start();
                                 handler.postDelayed(this, 16);
+
                             }
                         }, 3000);
 
@@ -333,5 +345,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return beginL.bearingTo(endL);
     }
 
+    private void changeCameraPosition(CameraPosition cameraPosition, boolean animate) {
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
 
+        if (animate) {
+            mMap.animateCamera(cameraUpdate);
+        } else {
+            mMap.moveCamera(cameraUpdate);
+        }
+    }
 }

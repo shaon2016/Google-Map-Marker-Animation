@@ -149,6 +149,8 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
         addMarkerToMap(new LatLng(23.7465, 90.3760));
         addMarkerToMap(new LatLng(23.7925, 90.4078));
         addMarkerToMap(new LatLng(23.7384, 90.3959));
+        addMarkerToMap(new LatLng(22.3475, 91.8123));
+        addMarkerToMap(new LatLng(23.644480, 90.598434));
 //        addMarkerToMap(new LatLng(50.95936754348453, 3.518972061574459));
 //        addMarkerToMap(new LatLng(50.95877285446026, 3.5199161991477013));
 //        addMarkerToMap(new LatLng(50.958179213755905, 3.520646095275879));
@@ -167,23 +169,18 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
 
     GoogleMap.CancelableCallback MyCancelableCallback =
             new GoogleMap.CancelableCallback() {
-
                 @Override
                 public void onCancel() {
                     System.out.println("onCancelled called");
                 }
-
                 @Override
                 public void onFinish() {
-
-
                     if (++currentPt < markers.size()) {
-
-                        float targetBearing = bearingBetweenLatLngs(googleMap.getCameraPosition().target, markers.get(currentPt).getPosition());
+                        float targetBearing = bearingBetweenLatLngs(googleMap.getCameraPosition()
+                                .target, markers.get(currentPt).getPosition());
 
                         LatLng targetLatLng = markers.get(currentPt).getPosition();
                         //float targetZoom = zoomBar.getProgress();
-
 
                         System.out.println("currentPt  = " + currentPt);
                         System.out.println("size  = " + markers.size());
@@ -195,7 +192,6 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
                                         .bearing(targetBearing)
                                         .zoom(googleMap.getCameraPosition().zoom)
                                         .build();
-
 
                         googleMap.animateCamera(
                                 CameraUpdateFactory.newCameraPosition(cameraPosition),
@@ -250,7 +246,6 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
         public void stop() {
             trackingMarker.remove();
             mHandler.removeCallbacks(animator);
-
         }
 
         public void initialize(boolean showPolyLine) {
@@ -508,7 +503,6 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
         } else {
             googleMap.moveCamera(cameraUpdate);
         }
-
     }
 
     private Location convertLatLngToLocation(LatLng latLng) {
