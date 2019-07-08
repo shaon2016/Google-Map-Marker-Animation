@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+            android:name=".DaggerMarekerActivityDialog" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +39,7 @@
         <activity
             android:name=".DraggableMarkerActivity"
             android:label="@string/title_activity_draggable_marker" />
-        <activity android:name=".UpdatePositionMovingTheMap"></activity>
+        <activity android:name=".UpdatePositionMovingTheMap" />
     </application>
 
 </manifest>

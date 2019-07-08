@@ -14,16 +14,17 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 public class MainActivity extends AppCompatActivity {
-    Button btnDraggableMarkerDialog, btnAnimCar, btnAnimCar2, btnAnimMarker, btnDragMarker, btnDragMarkerAndMoveTheMap, btnPlacePicker;
+    Button btnDraggableMarkerActivityDialog, btnDraggableMarkerDialog, btnAnimCar, btnAnimCar2, btnAnimMarker, btnDragMarker, btnDragMarkerAndMoveTheMap, btnPlacePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnAnimCar = (Button) findViewById(R.id.btnAnimCar);
+        btnAnimCar =  findViewById(R.id.btnAnimCar);
         btnAnimCar2 = (Button) findViewById(R.id.btnAnimCar2);
         btnAnimMarker = (Button) findViewById(R.id.btnAnimMarker);
         btnDragMarker = (Button) findViewById(R.id.btnDragMarker);
+        btnDraggableMarkerActivityDialog = (Button) findViewById(R.id.btnDraggableMarkerActivityDialog);
         btnDragMarkerAndMoveTheMap = (Button) findViewById(R.id.btnDragMarkerAndMoveTheMap);
         btnPlacePicker =  findViewById(R.id.btnPlacePicker);
         btnDraggableMarkerDialog =  findViewById(R.id.btnDraggableMarkerDialog);
@@ -73,6 +74,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDraggableMarkerDialog();
+            }
+        });
+        btnDraggableMarkerActivityDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, DaggerMarekerActivityDialog.class));
             }
         });
     }
