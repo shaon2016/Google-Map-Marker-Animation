@@ -4,7 +4,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -66,6 +65,7 @@ public class UpdatePositionMovingTheMap extends FragmentActivity implements OnMa
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         geocoder = new Geocoder(this, Locale.getDefault());
+
 
         //auto complete api
         mGoogleApiClient = new GoogleApiClient.Builder(this)
