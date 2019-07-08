@@ -2,7 +2,6 @@ package com.durbinlabs.googlemapmarkeranimation;
 
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -11,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.fragment.app.FragmentActivity;
 
 import com.durbinlabs.googlemapmarkeranimation.adapter.PlaceArrayAdapter;
 import com.google.android.gms.common.ConnectionResult;
