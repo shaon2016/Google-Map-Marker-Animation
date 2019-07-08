@@ -56,6 +56,7 @@ class DraggableMarkerDialogFragment : DialogFragment(), OnMapReadyCallback,
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_draggable_marker_dialog, container, false)
+
         setToolbar(view)
         return view
     }
@@ -242,4 +243,6 @@ class DraggableMarkerDialogFragment : DialogFragment(), OnMapReadyCallback,
         @JvmStatic
         fun newInstance() = DraggableMarkerDialogFragment()
     }
+
+
 }
