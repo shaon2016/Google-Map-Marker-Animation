@@ -1,14 +1,20 @@
 package com.durbinlabs.googlemapmarkeranimation;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 public class MainActivity extends AppCompatActivity {
-    Button btnAnimCar, btnAnimCar2, btnAnimMarker, btnDragMarker, btnDragMarkerAndMoveTheMap;
+    Button btnDraggableMarkerDialog, btnAnimCar, btnAnimCar2, btnAnimMarker, btnDragMarker, btnDragMarkerAndMoveTheMap, btnPlacePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         btnAnimMarker = (Button) findViewById(R.id.btnAnimMarker);
         btnDragMarker = (Button) findViewById(R.id.btnDragMarker);
         btnDragMarkerAndMoveTheMap = (Button) findViewById(R.id.btnDragMarkerAndMoveTheMap);
+        btnPlacePicker =  findViewById(R.id.btnPlacePicker);
+        btnDraggableMarkerDialog =  findViewById(R.id.btnDraggableMarkerDialog);
 
         btnAnimCar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         btnDragMarker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, DraggableMarker.class));
+                startActivity(new Intent(MainActivity.this, DraggableMarkerActivity.class));
             }
         });
 
@@ -54,5 +62,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, UpdatePositionMovingTheMap.class));
             }
         });
+
+        btnPlacePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPlacePicker();
+            }
+        });
+        btnDraggableMarkerDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDraggableMarkerDialog();
+            }
+        });
+    }
+
+    private void showDraggableMarkerDialog() {
+        DraggableMarkerDialogFragment dialog = new DraggableMarkerDialogFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        dialog.show(ft, "draggable marker");
+    }
+
+    private int PLACE_PICKER_REQUEST = 1;
+    private void showPlacePicker() {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(MainActivity.this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
     }
 }

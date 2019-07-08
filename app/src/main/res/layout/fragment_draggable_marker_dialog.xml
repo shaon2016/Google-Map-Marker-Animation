@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DraggableMarkerDialogFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:background="@color/colorAccent"
+        android:id="@+id/draggableMarkerToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.durbinlabs.googlemapmarkeranimation.DraggableMarkerActivity" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/white">
+
+            <AutoCompleteTextView
+                android:background="@android:color/transparent"
+                android:padding="12dp"
+                android:id="@+id/autoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:hint="Enter Place Here"
+                android:maxLines="2"
+                android:ellipsize="end"
+                />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/centerMarkerByImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:src="@drawable/ic_room_red_300_24dp" />
+
+    </RelativeLayout>
+</LinearLayout>

@@ -33,14 +33,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class DraggableMarker extends FragmentActivity implements OnMapReadyCallback,
+public class DraggableMarkerActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, GoogleMap.OnMarkerDragListener,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
     private Marker marker;
     private Geocoder geocoder;
     private List<Address> addresses;
-    private static final String TAG = DraggableMarker.class.getSimpleName();
+    private static final String TAG = DraggableMarkerActivity.class.getSimpleName();
     private GoogleMap mMap;
 
     private static final int GOOGLE_API_CLIENT_ID = 0;
@@ -61,7 +61,7 @@ public class DraggableMarker extends FragmentActivity implements OnMapReadyCallb
         geocoder = new Geocoder(this, Locale.getDefault());
 
         //auto complete api
-        mGoogleApiClient = new GoogleApiClient.Builder(DraggableMarker.this)
+        mGoogleApiClient = new GoogleApiClient.Builder(DraggableMarkerActivity.this)
                 .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
                 .addConnectionCallbacks(this)

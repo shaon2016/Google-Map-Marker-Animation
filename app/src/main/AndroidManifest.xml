@@ -34,7 +34,7 @@
         <activity android:name=".MapsActivity" />
         <activity android:name=".MapsActivity3" />
         <activity
-            android:name=".DraggableMarker"
+            android:name=".DraggableMarkerActivity"
             android:label="@string/title_activity_draggable_marker" />
         <activity android:name=".UpdatePositionMovingTheMap"></activity>
     </application>

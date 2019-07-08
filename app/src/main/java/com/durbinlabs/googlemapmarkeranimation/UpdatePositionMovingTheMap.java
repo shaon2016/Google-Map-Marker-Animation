@@ -45,7 +45,7 @@ public class UpdatePositionMovingTheMap extends FragmentActivity implements OnMa
     private Marker marker;
     private Geocoder geocoder;
     private List<Address> addresses;
-    private static final String TAG = DraggableMarker.class.getSimpleName();
+    private static final String TAG = DraggableMarkerActivity.class.getSimpleName();
     private GoogleMap mMap;
     private ImageView centerMarkerByImageView;
     private static final int GOOGLE_API_CLIENT_ID = 0;

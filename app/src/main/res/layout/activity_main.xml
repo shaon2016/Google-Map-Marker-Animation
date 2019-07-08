@@ -36,4 +36,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Move The map to update marker position" />
+
+    <Button
+        android:id="@+id/btnPlacePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Place picker" />
+
+    <Button
+        android:id="@+id/btnDraggableMarkerDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Draggable Marker dialog" />
 </LinearLayout>
